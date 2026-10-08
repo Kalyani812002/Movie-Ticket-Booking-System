@@ -20,9 +20,9 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link className="brand" to="/" aria-label="CineBook home">
-          <span className="brand-mark">C</span>
-          <span>cine<span className="brand-light">book</span></span>
+        <Link className="brand" to="/" aria-label="Movie Ticket Booking System home">
+          <span className="brand-mark">M</span>
+          <span className="brand-name">Movie Ticket Booking System</span>
         </Link>
         <nav aria-label="Main navigation">
           <Link to="/#movies">Movies</Link>
@@ -40,7 +40,7 @@ export default function Header() {
           ) : (
             <>
               <Link className="header-account" to="/login">Sign in</Link>
-              <Link className="header-cta" to="/register">Join CineBook <span aria-hidden="true">↗</span></Link>
+              <Link className="header-cta" to="/register">Join now <span aria-hidden="true">↗</span></Link>
             </>
           )}
         </div>

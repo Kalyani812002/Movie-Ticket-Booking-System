@@ -48,7 +48,7 @@ export default function BookingsPage({ admin = false, dashboard = false }) {
     <section className="records-page page-width">
       <div className="section-heading">
         <div>
-          <span className="eyebrow"><span className="eyebrow-line" /> {admin ? "CineBook management" : `A good night, ${user?.name?.split(" ")[0] || "movie lover"}`}</span>
+          <span className="eyebrow"><span className="eyebrow-line" /> {admin ? "Movie Ticket Booking System" : `A good night, ${user?.name?.split(" ")[0] || "movie lover"}`}</span>
           <h1>{dashboard ? "Admin Dashboard" : admin ? "All bookings" : "My bookings"}<span className="accent-dot">.</span></h1>
         </div>
         {status === "ready" && <span className="section-count">{String(bookings.length).padStart(2, "0")} {admin ? "RESERVATIONS" : "BOOKINGS"}</span>}

@@ -110,7 +110,7 @@ export async function login(request, response, next) {
 }
 
 export function getCurrentUser(request, response) {
-  return response.json({ user: request.user });
+  return response.json({ user: request.user ?? null });
 }
 
 export function logout(_request, response) {

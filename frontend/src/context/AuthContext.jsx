@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
       setUser(currentUser);
     } catch (error) {
       setUser(null);
-      if (error.status !== 401) setSessionError(error.message);
+      setSessionError(error.message);
     } finally {
       setInitializing(false);
     }

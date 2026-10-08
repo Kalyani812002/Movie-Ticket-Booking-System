@@ -26,6 +26,7 @@ button { color: inherit; }
 .site-header { height: 78px; position: relative; z-index: 5; border-bottom: 1px solid rgba(255,255,255,.07); background: #101014; }
 .header-inner { width: min(1320px, calc(100% - 64px)); height: 100%; margin: auto; display: flex; align-items: center; justify-content: space-between; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; letter-spacing: -.8px; }
+.brand-name { white-space: nowrap; }
 .brand-mark { width: 29px; height: 29px; display: inline-grid; place-items: center; background: var(--orange); color: #171518; font-family: "Playfair Display", serif; font-size: 19px; font-weight: 700; border-radius: 50%; }
 .brand-light { color: #aaa9ae; font-weight: 400; }
 .header-inner nav { display: flex; gap: 38px; color: #bbb9c0; font-size: 12px; }
@@ -709,7 +710,7 @@ img { color: #aaa8b0; }
   .page-width, .header-inner, .footer-inner { width: min(100% - 36px,520px); }
   .site-header { height: 64px; }
   .header-inner { grid-template-columns: auto 1fr auto; gap: 10px; }
-  .brand { gap: 7px; font-size: 16px; }
+  .brand { gap: 7px; font-size: 10px; }
   .brand-mark { width: 26px; height: 26px; font-size: 16px; }
   .header-inner nav { justify-self: center; gap: 0; }
   .header-inner nav a { font-size: 10px; }
@@ -759,7 +760,8 @@ img { color: #aaa8b0; }
 @media (max-width: 420px) {
   .page-width, .header-inner, .footer-inner { width: calc(100% - 28px); }
   .header-inner { gap: 6px; }
-  .brand { font-size: 14px; }
+  .brand { font-size: 8px; }
+  .header-inner nav { display: none; }
   .brand-mark { width: 23px; height: 23px; font-size: 14px; }
   .header-inner nav a { font-size: 9px; }
   .header-actions { gap: 8px; }
@@ -1008,4 +1010,51 @@ button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
   .seat-row { grid-template-columns: 8px repeat(12,minmax(8px,1fr)) 8px; gap: 2px; }
   .seat-map { padding-right: 2px; padding-left: 2px; }
   .seat-legend { gap: 7px; }
+}
+
+@media (min-width: 681px) and (max-width: 1024px) {
+  .header-inner {
+    width: calc(100% - 48px);
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 16px;
+  }
+  .brand { min-width: 0; gap: 8px; font-size: clamp(12px, 1.7vw, 16px); }
+  .brand-name { overflow: hidden; text-overflow: ellipsis; }
+  .header-inner nav { gap: clamp(12px, 2vw, 24px); font-size: 11px; }
+  .header-actions { gap: 10px; }
+  .header-cta { padding-right: 10px; padding-left: 10px; font-size: 10px; }
+  .admin-heading { align-items: flex-start; }
+  .admin-summary { gap: 14px; }
+  .admin-item-card { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .admin-item-actions { width: 100%; }
+  .admin-item-actions .button { flex: 1; }
+}
+
+@media (max-width: 680px) {
+  .header-inner {
+    width: calc(100% - 28px);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .brand { min-width: 0; gap: 7px; font-size: clamp(9px, 3vw, 12px); }
+  .brand-name { overflow: hidden; text-overflow: ellipsis; }
+  .header-inner nav { display: none; }
+  .header-actions { flex-shrink: 0; gap: 10px; }
+  .header-account, .header-signout { min-height: 40px; font-size: 10px; }
+  .header-cta { min-height: 40px; padding: 0 10px; font-size: 10px; }
+  .button { min-height: 44px; }
+  .admin-item-actions .button { min-height: 42px; }
+  .seat { height: 22px; }
+  .ticket-details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 380px) {
+  .header-inner { gap: 6px; }
+  .brand { font-size: 9px; }
+  .header-actions { gap: 7px; }
+  .header-account, .header-signout { font-size: 9px; }
+  .header-cta { padding: 0 7px; font-size: 9px; }
+  .seat { height: 20px; }
+  .seat-legend { gap: 8px; }
 }

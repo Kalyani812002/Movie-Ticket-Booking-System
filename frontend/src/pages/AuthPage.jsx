@@ -26,6 +26,8 @@ export default function AuthPage({ mode }) {
     typeof path === "string" &&
     path.startsWith("/") &&
     !path.startsWith("//") &&
+    !path.includes("\\") &&
+    !/%5c/i.test(path) &&
     path !== "/login" &&
     path !== "/register";
   const existingDestination = user?.role === "admin"
@@ -89,7 +91,7 @@ export default function AuthPage({ mode }) {
   return (
     <section className="auth-page page-width">
       <div className="auth-card">
-        <span className="eyebrow"><span className="eyebrow-line" /> Welcome to CineBook</span>
+        <span className="eyebrow"><span className="eyebrow-line" /> Movie Ticket Booking System</span>
         <h1>{isRegister ? <>Your next<br /><em>great night.</em></> : <>Good to<br /><em>see you.</em></>}</h1>
         <p className="auth-subtitle">{isRegister ? "Create an account to reserve your favorite seats." : "Sign in to book seats and see your tickets."}</p>
         {sessionError && (
@@ -177,14 +179,14 @@ export default function AuthPage({ mode }) {
           </button>
         </form>
         <p className="auth-switch">
-          {isRegister ? "Already have an account?" : "New to CineBook?"}{" "}
+          {isRegister ? "Already have an account?" : "New to Movie Ticket Booking System?"}{" "}
           <Link to={isRegister ? "/login" : "/register"} state={location.state}>
             {isRegister ? "Sign in" : "Create an account"}
           </Link>
         </p>
       </div>
       <div className="auth-side-note" aria-hidden="true">
-        <span className="auth-side-mark">C</span>
+        <span className="auth-side-mark">M</span>
         <p>Every great night<br />starts with a story.</p>
         <span className="auth-side-caption">YOUR SEAT IS WAITING</span>
       </div>

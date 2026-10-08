@@ -85,7 +85,11 @@ const movies = [
 ];
 
 try {
-  await connectDatabase();
+  const mongoUri = process.env.MONGODB_URI?.trim();
+  if (!mongoUri) {
+    throw new Error("MONGODB_URI is required. Set it in backend/.env.");
+  }
+  await connectDatabase(mongoUri);
   await Movie.bulkWrite(
     movies.map((movie) => ({
       updateOne: {

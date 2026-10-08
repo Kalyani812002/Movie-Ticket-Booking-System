@@ -225,7 +225,7 @@ export default function AdminDashboard({ initialSection = "movies" }) {
     <section className="admin-page page-width">
       <div className="admin-heading">
         <div>
-          <span className="eyebrow"><span className="eyebrow-line" /> CineBook management</span>
+          <span className="eyebrow"><span className="eyebrow-line" /> Movie Ticket Booking System</span>
           <h1>Admin Dashboard<span className="accent-dot">.</span></h1>
           <p>Manage your catalogue, show schedule, and reservations.</p>
         </div>

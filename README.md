@@ -26,7 +26,7 @@ Public registration always creates a `user` account. It does not accept a role f
 ## Tech stack
 
 - **Frontend:** React 18, Vite, React Router, Axios
-- **Backend:** Node.js 18+, Express 4
+- **Backend:** Node.js 20+, Express 4
 - **Database:** MongoDB with Mongoose
 - **Authentication:** JWT, bcryptjs, HttpOnly cookies
 - **HTTP security:** Helmet and credentialed, origin-restricted CORS
@@ -87,11 +87,11 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 | --- | --- | --- |
 | `VITE_API_URL` | Yes | Backend API base URL, including the `/api` prefix |
 
-The local value is provided in `frontend/.env.example`. Vite embeds this value at build time; configure it before running a production build.
+Set `VITE_API_URL` in `frontend/.env` to the API base URL, including `/api` (for local development, typically `http://localhost:5000/api`). Vite embeds this value at build time; configure it before running a production build.
 
 ## Installation and local development
 
-Requirements: Node.js 18 or newer, npm, and a running local MongoDB instance or an Atlas database.
+Requirements: Node.js 20 or newer, npm, and a running local MongoDB instance or an Atlas database.
 
 Use two terminals from the project root.
 
@@ -203,6 +203,7 @@ Deploy MongoDB, the backend API, and the static frontend. The frontend and API s
 1. **Provision MongoDB.** Create a production database and configure network access and a database user with appropriate permissions. Keep the connection string private.
 2. **Deploy the backend as a Node.js service.** Use `backend` as its working directory, install dependencies with `npm install`, and start with `npm start`. Configure `MONGODB_URI`, a unique `JWT_SECRET` (32 bytes or longer), `CLIENT_URL` set to the frontend's exact origin, `NODE_ENV=production`, and the platform-provided `PORT`. Do not expose secrets in source control or build logs.
 3. **Deploy the frontend as a static site.** Use `frontend` as the working directory, install with `npm install`, and build with `npm run build`. Publish the `frontend/dist` directory. Set `VITE_API_URL` to the deployed API base URL ending in `/api` before building.
+   For Vercel, set the project Root Directory to `frontend`, use `npm run build` as the Build Command and `dist` as the Output Directory, and configure `VITE_API_URL` in the project's Environment Variables. `frontend/vercel.json` rewrites application routes to `index.html` for React Router.
 4. **Configure SPA routing.** Configure the static host to serve `index.html` for frontend routes such as `/account/bookings`, `/book/:movieId`, and `/admin`.
 5. **Keep the browser session compatible with deployment origins.** The API allows the exact `CLIENT_URL` origin and sets an HttpOnly, `SameSite=Strict`, `Secure` cookie in production. Host the frontend and API on the same site (for example, on subdomains of the same registrable domain) so browsers send the session cookie. Separate cross-site domains are not compatible with the current Strict cookie settings.
 6. **Verify deployment.** Check `GET /api/health`, then verify registration/login, cookie-backed session restoration, booking access, and admin-only routes using appropriately provisioned accounts.
