@@ -17,6 +17,10 @@ app.use(cors({ origin: getClientOrigin(), credentials: true }));
 app.use(cookieParser());
 app.use(express.json({ limit: "10kb" }));
 
+app.get("/", (_request, response) => {
+  response.json({ message: "Movie Ticket Booking System is running" });
+});
+
 app.get("/api/health", (_request, response) => {
   const connected = mongoose.connection.readyState === 1;
   response.status(connected ? 200 : 503).json({
