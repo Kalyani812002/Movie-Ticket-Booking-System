@@ -39,7 +39,7 @@ async function startServer() {
   await User.init();
   await Show.init();
 
-  const server = app.listen(port);
+ const server = app.listen(port, "0.0.0.0");
   await new Promise((resolve, reject) => {
     server.once("listening", resolve);
     server.once("error", reject);
