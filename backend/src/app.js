@@ -16,8 +16,9 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
-  "https://movie-ticket-booking-system-fronten-three.vercel.app",
+  "https://movie-ticket-booking-system-57kq.vercel.app",
 ];
+
 
 app.use(helmet());
 
