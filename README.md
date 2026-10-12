@@ -216,6 +216,17 @@ The repository includes a Railway configuration and a root `Dockerfile` for depl
 
 Do not commit production connection strings or secrets. The application uses `SameSite=Strict` auth cookies in production, so the frontend and API must be on the same site for browser-based sign-in to work (for example, sibling subdomains under a domain you control).
 
+### Fixing a Vercel frontend that cannot reach the API
+
+For a Vercel frontend and Railway API:
+
+1. In the frontend Vercel project's Environment Variables, set `VITE_API_URL` to the Railway API origin with `/api` at the end, for example `https://your-service.up.railway.app/api`. Without `/api`, requests go to `/movies` instead of the backend route `/api/movies`.
+2. In the Railway service's Variables, set `CLIENT_URL` to the exact frontend origin shown in the browser's address bar, for example `https://your-project-<deployment-suffix>.vercel.app` (no path or trailing slash).
+3. If the frontend has multiple Vercel domains that must work, set optional `CLIENT_URLS` to the other exact origins separated by commas. Do not use wildcards. Redeploy the frontend after changing `VITE_API_URL` and redeploy the backend after changing its CORS variables.
+4. Check `https://your-service.up.railway.app/api/health`. It must return `200` with `"status":"ok"` and `"database":"connected"` before movie requests can succeed.
+
+Prefer the stable production Vercel domain rather than a deployment-specific preview URL. Authentication cookies may not work across unrelated Vercel and Railway domains with the current `SameSite=Strict` cookie policy; public movie/show browsing does not require a session.
+
 1. **Provision MongoDB.** Create a production database and configure network access and a database user with appropriate permissions. Keep the connection string private.
 2. **Deploy the backend as a Node.js service.** Use `backend` as its working directory, install dependencies with `npm install`, and start with `npm start`. Configure `MONGODB_URI`, a unique `JWT_SECRET` (32 bytes or longer), `CLIENT_URL` set to the frontend's exact origin, `NODE_ENV=production`, and the platform-provided `PORT`. Do not expose secrets in source control or build logs.
    To build the backend Docker image from the repository root, run `docker build -t cinebook-api .`. The image installs production dependencies and starts the existing `npm start` script; provide `MONGODB_URI`, `JWT_SECRET`, `CLIENT_URL`, and `PORT` as runtime environment variables.

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
 import mongoose from "mongoose";
+import { getClientOrigins } from "./config/env.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
@@ -13,19 +14,18 @@ import { errorHandler, notFound } from "./middleware/errorHandler.js";
 
 const app = express();
 
-const allowedOrigins = [
+const allowedOrigins = new Set([
   "http://localhost:5173",
   "http://localhost:5174",
-  "https://movie-ticket-booking-system-57kq.vercel.app",
-];
-
+  ...getClientOrigins(),
+]);
 
 app.use(helmet());
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.has(origin)) {
         return callback(null, true);
       }
 

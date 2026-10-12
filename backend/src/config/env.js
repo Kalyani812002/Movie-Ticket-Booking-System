@@ -8,11 +8,7 @@ function parsePort(value) {
   return port;
 }
 
-export function getClientOrigin() {
-  const clientUrl = process.env.CLIENT_URL?.trim();
-  if (!clientUrl) {
-    throw new Error("CLIENT_URL is required. Set it in backend/.env.");
-  }
+function parseClientOrigin(clientUrl) {
   try {
     const parsedUrl = new URL(clientUrl);
     if (!["http:", "https:"].includes(parsedUrl.protocol)) {
@@ -20,8 +16,26 @@ export function getClientOrigin() {
     }
     return parsedUrl.origin;
   } catch {
-    throw new Error("CLIENT_URL must be a valid HTTP or HTTPS origin.");
+    throw new Error("CLIENT_URL and CLIENT_URLS must contain valid HTTP or HTTPS origins.");
   }
+}
+
+export function getClientOrigins() {
+  const primaryClientUrl = process.env.CLIENT_URL?.trim();
+  if (!primaryClientUrl) {
+    throw new Error("CLIENT_URL is required. Set it in backend/.env.");
+  }
+
+  const additionalClientUrls = (process.env.CLIENT_URLS ?? "")
+    .split(",")
+    .map((url) => url.trim())
+    .filter(Boolean);
+
+  return [...new Set([primaryClientUrl, ...additionalClientUrls].map(parseClientOrigin))];
+}
+
+export function getClientOrigin() {
+  return getClientOrigins()[0];
 }
 
 export function getJwtSecret() {
