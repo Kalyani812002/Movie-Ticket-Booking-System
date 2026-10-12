@@ -200,6 +200,22 @@ Seat IDs must be unique, use the `A1`–`H12` format, and number no more than ei
 
 Deploy MongoDB, the backend API, and the static frontend. The frontend and API should use HTTPS in production.
 
+### Railway backend
+
+The repository includes a Railway configuration and a root `Dockerfile` for deploying the backend:
+
+1. In Railway, create a project and deploy this GitHub repository as a service. Railway uses `railway.json` and builds the root `Dockerfile`.
+2. Add these service variables in Railway's Variables settings:
+   - `MONGODB_URI`: production MongoDB connection string
+   - `JWT_SECRET`: unique random secret of at least 32 bytes
+   - `CLIENT_URL`: exact deployed frontend origin, with no path
+   - `NODE_ENV`: `production`
+3. Generate a Railway domain in the service's Networking settings. The API base URL is `https://<your-railway-domain>/api`; its health check is `https://<your-railway-domain>/api/health`.
+4. Confirm the health endpoint returns `200` with `"status":"ok"` and `"database":"connected"`. A `503` means the service cannot connect to MongoDB; check the URI and database network access.
+5. Set the frontend's `VITE_API_URL` to the API base URL ending in `/api` and redeploy the frontend.
+
+Do not commit production connection strings or secrets. The application uses `SameSite=Strict` auth cookies in production, so the frontend and API must be on the same site for browser-based sign-in to work (for example, sibling subdomains under a domain you control).
+
 1. **Provision MongoDB.** Create a production database and configure network access and a database user with appropriate permissions. Keep the connection string private.
 2. **Deploy the backend as a Node.js service.** Use `backend` as its working directory, install dependencies with `npm install`, and start with `npm start`. Configure `MONGODB_URI`, a unique `JWT_SECRET` (32 bytes or longer), `CLIENT_URL` set to the frontend's exact origin, `NODE_ENV=production`, and the platform-provided `PORT`. Do not expose secrets in source control or build logs.
    To build the backend Docker image from the repository root, run `docker build -t cinebook-api .`. The image installs production dependencies and starts the existing `npm start` script; provide `MONGODB_URI`, `JWT_SECRET`, `CLIENT_URL`, and `PORT` as runtime environment variables.
