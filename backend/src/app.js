@@ -14,13 +14,13 @@ import { errorHandler, notFound } from "./middleware/errorHandler.js";
 
 const app = express();
 
+
 const allowedOrigins = new Set([
+  "https://movie-ticket-booking-system-fronten-iota.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
   ...getClientOrigins(),
 ]);
-
-app.use(helmet());
 
 app.use(
   cors({
@@ -29,11 +29,15 @@ app.use(
         return callback(null, true);
       }
 
-      return callback(new Error(`CORS blocked for origin: ${origin}`));
+      console.error("CORS blocked origin:", origin);
+      return callback(null, false);
     },
     credentials: true,
   })
 );
+
+
+
 
 app.use(cookieParser());
 app.use(express.json({ limit: "10kb" }));
